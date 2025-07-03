@@ -7520,8 +7520,7 @@ a.anchor-link {
 <h1>Algoritmos de optimización - Seminario<br/></h1>
 <p>Nombre y Apellidos:  Michael Laudrup Luis González <br/>
 Url: <a href="https://github.com/MichaeLaudrup/Master_AI_VIU/tree/main/00_Optimizacion_algoritmos/SEMINARIO">https://github.com/MichaeLaudrup/Master_AI_VIU/tree/main/00_Optimizacion_algoritmos/SEMINARIO</a><br/></p>
-<p>Problema: 3. Combinar cifras y operaciones</p>
-<h2 id="Descripci%C3%B3n-del-problema:">Descripción del problema:<a class="anchor-link" href="#Descripci%C3%B3n-del-problema:">¶</a></h2><p>Disponemos de las 9 cigras del 1 al 9 (excluimos el cero) y de los 4 signos básicos de las operaciones fundamentales: Suma(+), resta (-), multiplicación (*) y división (/)</p>
+<h2 id="Problema:-3.-Combinar-cifras-y-operaciones">Problema: 3. Combinar cifras y operaciones<a class="anchor-link" href="#Problema:-3.-Combinar-cifras-y-operaciones">¶</a></h2><h2 id="Descripci%C3%B3n-del-problema:">Descripción del problema:<a class="anchor-link" href="#Descripci%C3%B3n-del-problema:">¶</a></h2><p>Disponemos de las 9 cigras del 1 al 9 (excluimos el cero) y de los 4 signos básicos de las operaciones fundamentales: Suma(+), resta (-), multiplicación (*) y división (/)</p>
 <p>Debemos combinarlos alternativamente sin repetir ninguno de ellos para obtener una cantidad dada. Un ejemplo sería obtener el 4.</p>
 <p><code>4 + 2 - 6 / 3 * 1 = 4</code></p>
 <p>Debe analizarse el problema encontrar todos los valores enteros posibles planteando las siguientes cuestiones:</p>
@@ -7540,6 +7539,13 @@ Url: <a href="https://github.com/MichaeLaudrup/Master_AI_VIU/tree/main/00_Optimi
 <li>Generar y probar con diferentes juegos de datos de entrada.</li>
 </ul>
 <p>(*) La respuesta es obligatoria</p>
+<p><b>Calculo del valor máximo y mínimo de manera teórica</b></p>
+<p>En el caso del máximo buscaremos maximizar los números asociados a la operacioensd de suma y multiplicación, y minimizar los números asociados a las operaciones de resta y división. Cualquier número dividido en 1 no cambia su valor, por lo que nos interesa dividir 9 entre 1, y a ese mismo resultado que es nueve, multiplicarlo por el siguiente número más grande que es 8, finalmente sumamos 7, que es el siguiente número más grande y podemos restar 2, que es el número más pequeño de está operación nos quedará que:</p>
+<p><code>9/1 * 8 + 7 - 2 = 9 * 8 + 7 - 2 = 72 + 7 - 2 = 77</code></p>
+<p>De esta forma nos hemos acercado al valor máximo teoríco siguiendo una estrategia de maximización de los números asociados a las operaciones de suma y multiplicación, y minimizando los números asociados a las operaciones de resta y división. Más adelante veremos como <strong>el valor máximo entero que se encuentra es también 77</strong>.</p>
+<p>Para el calculo del valor mínimo habrá que hacer lo contrario, es decir, intertar restar un número muy grande a otro número muy pequeño, el número más grande que podemos restar es 9*8, es decir <code>-9*8</code>por lo que ya tenemos la primera parte de la operación, ahora debemos restarle al número más pequeño posible esto mismo, quedandonos "+" y "/" y los digitos { 1, 2, 3, 4, 5, 6, 7 } **el número entero más pequeño que se puede obtener*^ es `4 / 2 + 1 . Quedando la operación:</p>
+<p><code>-9 * 8 + 4 / 2 + 1 = -72 + 2 + 1 = -69</code></p>
+<p>Más adelante veremos que <strong>el valor mínimo entero que se encuentra es también -69</strong> en la ejeución de nuestor algoritmo.</p>
 </div>
 </div>
 </div>
@@ -7629,7 +7635,7 @@ y la división, y buscaremos maximizar los valores asociados a las operaciones q
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [57]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
@@ -7691,8 +7697,12 @@ y la división, y buscaremos maximizar los valores asociados a las operaciones q
 
     <span class="k">for</span> <span class="n">current_operators</span> <span class="ow">in</span> <span class="n">operator_generator</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">current_numbers</span> <span class="ow">in</span> <span class="n">numbers_generator</span><span class="p">():</span>
-            <span class="n">total_exp</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">exp</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">calculate_expresion</span><span class="p">(</span><span class="n">current_operators</span><span class="p">,</span> <span class="n">current_numbers</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">integers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exp</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
+                <span class="n">total_exp</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">continue</span>
 
             <span class="k">if</span> <span class="n">result</span> <span class="o">&gt;</span> <span class="n">max_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="n">max_tuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
@@ -7706,8 +7716,6 @@ y la división, y buscaremos maximizar los valores asociados a las operaciones q
                     <span class="n">solution_found</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
 
-            <span class="k">if</span> <span class="n">result</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">integers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">exp</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
         <span class="k">if</span><span class="p">(</span><span class="n">solution_found</span> <span class="ow">and</span> <span class="n">only_find_one</span><span class="p">):</span>
             <span class="k">break</span>
 
@@ -7717,13 +7725,12 @@ y la división, y buscaremos maximizar los valores asociados a las operaciones q
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mínimo: </span><span class="si">{</span><span class="n">min_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> (Exp: </span><span class="si">{</span><span class="n">min_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Soluciones para </span><span class="si">{</span><span class="n">target_num</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">solutions</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Numero de soluciones totales para obtener el valor `</span><span class="si">{</span><span class="n">target_num</span><span class="si">}</span><span class="s2">`: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">solutions</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total expresiones generadas: </span><span class="si">{</span><span class="n">total_exp</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Enteros: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">integers</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total enteros obtenidos: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">integers</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expresión para el valor </span><span class="si">{</span><span class="n">target_num</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">solutions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
             
-<span class="n">expresion_gerenerator</span><span class="p">(</span><span class="mi">77</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">expresion_gerenerator</span><span class="p">(</span><span class="mf">77.0</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7737,12 +7744,11 @@ y la división, y buscaremos maximizar los valores asociados a las operaciones q
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Búsqueda finalizada.
-Máximo: 78.83333333333333 (Exp: 7+8*9-1/6)
-Mínimo: -70.71428571428571 (Exp: 1+2/7-8*9)
-Soluciones para 77: [('7+8*9-2/1', 77.0), ('7+8*9-4/2', 77.0), ('7+8*9-6/3', 77.0), ('7+9*8-2/1', 77.0), ('7+9*8-4/2', 77.0), ('7+9*8-6/3', 77.0), ('7+8*9/1-2', 77.0), ('7+9*8/1-2', 77.0), ('7+8/1*9-2', 77.0), ('7+9/1*8-2', 77.0), ('7-2+8*9/1', 77.0), ('7-2+9*8/1', 77.0), ('7-2+8/1*9', 77.0), ('7-2+9/1*8', 77.0), ('7-2/1+8*9', 77.0), ('7-2/1+9*8', 77.0), ('7-4/2+8*9', 77.0), ('7-4/2+9*8', 77.0), ('7-6/3+8*9', 77.0), ('7-6/3+9*8', 77.0), ('8*9+7-2/1', 77.0), ('8*9+7-4/2', 77.0), ('8*9+7-6/3', 77.0), ('9*8+7-2/1', 77.0), ('9*8+7-4/2', 77.0), ('9*8+7-6/3', 77.0), ('8*9+7/1-2', 77.0), ('9*8+7/1-2', 77.0), ('8*9-2+7/1', 77.0), ('9*8-2+7/1', 77.0), ('8*9-2/1+7', 77.0), ('8*9-4/2+7', 77.0), ('8*9-6/3+7', 77.0), ('9*8-2/1+7', 77.0), ('9*8-4/2+7', 77.0), ('9*8-6/3+7', 77.0), ('8*9/1+7-2', 77.0), ('9*8/1+7-2', 77.0), ('8*9/1-2+7', 77.0), ('9*8/1-2+7', 77.0), ('7/1+8*9-2', 77.0), ('7/1+9*8-2', 77.0), ('7/1-2+8*9', 77.0), ('7/1-2+9*8', 77.0), ('8/1*9+7-2', 77.0), ('9/1*8+7-2', 77.0), ('8/1*9-2+7', 77.0), ('9/1*8-2+7', 77.0)]
-Numero de soluciones totales para obtener el valor `77`: 48
-Total expresiones generadas: 362880
-Enteros: 90000
+Máximo: 77.0 (Exp: 7+8*9-2/1)
+Mínimo: -69.0 (Exp: 1+4/2-8*9)
+Soluciones para 77.0: [('7+8*9-2/1', 77.0), ('7+8*9-4/2', 77.0), ('7+8*9-6/3', 77.0), ('7+9*8-2/1', 77.0), ('7+9*8-4/2', 77.0), ('7+9*8-6/3', 77.0), ('7+8*9/1-2', 77.0), ('7+9*8/1-2', 77.0), ('7+8/1*9-2', 77.0), ('7+9/1*8-2', 77.0), ('7-2+8*9/1', 77.0), ('7-2+9*8/1', 77.0), ('7-2+8/1*9', 77.0), ('7-2+9/1*8', 77.0), ('7-2/1+8*9', 77.0), ('7-2/1+9*8', 77.0), ('7-4/2+8*9', 77.0), ('7-4/2+9*8', 77.0), ('7-6/3+8*9', 77.0), ('7-6/3+9*8', 77.0), ('8*9+7-2/1', 77.0), ('8*9+7-4/2', 77.0), ('8*9+7-6/3', 77.0), ('9*8+7-2/1', 77.0), ('9*8+7-4/2', 77.0), ('9*8+7-6/3', 77.0), ('8*9+7/1-2', 77.0), ('9*8+7/1-2', 77.0), ('8*9-2+7/1', 77.0), ('9*8-2+7/1', 77.0), ('8*9-2/1+7', 77.0), ('8*9-4/2+7', 77.0), ('8*9-6/3+7', 77.0), ('9*8-2/1+7', 77.0), ('9*8-4/2+7', 77.0), ('9*8-6/3+7', 77.0), ('8*9/1+7-2', 77.0), ('9*8/1+7-2', 77.0), ('8*9/1-2+7', 77.0), ('9*8/1-2+7', 77.0), ('7/1+8*9-2', 77.0), ('7/1+9*8-2', 77.0), ('7/1-2+8*9', 77.0), ('7/1-2+9*8', 77.0), ('8/1*9+7-2', 77.0), ('9/1*8+7-2', 77.0), ('8/1*9-2+7', 77.0), ('9/1*8-2+7', 77.0)]
+Numero de soluciones totales para obtener el valor `77.0`: 48
+Total enteros obtenidos: 90000
 </pre>
 </div>
 </div>
@@ -7801,7 +7807,10 @@ si que tendrá un coste temporal constante $O(1)$</p>
 <p>Aunque en nuestro caso concreto sean 4 operadores de manera estática, en general, si rediseñamos el problema para un caso genérico, el generador de permutaciones de operadores tendrá un coste "$O(n!)$", es decir, si tenemos 4 operadores posibles, el primer bucle for <code>for current_operators in operator_generator():</code> tendrá exactamente $n!$ iteraciones.</p>
 <p>A su vez, por cada iteración de este último bucle for, haremos $\frac{9!}{(9-(n+1))!}$ iteraciones internas en el bucle <code>for current_numbers in numbers_generator():</code>, recordando que "n+1" denota el número de dígitos y subrayando que "n+1" no puede ser mayor que 9 si mantenemos la restricción de que no se pueden repetir dígitos y que estos van del 1 al 9.</p>
 <p>Finalmente, el coste nos quedaría como:</p>
-<p>$$O(n!·\frac{9!}{(9-(n+1))!})=O(n!·\frac{9!}{(8-n)!})$$</p>
+<p>$$O(n!·\frac{9!}{(9-(n+1))!})=O(n!·\frac{9!}{(8-n)!})=O(\frac{n!}{(8-n)!})$$</p>
+<p>Podremos considerar el factor $\frac{9!}{(8-n)!}$ como una constante multiplicativa, ya que esta acotada, superior e inferiormente y por la propia notación de $O$ debemos reducirlo a:
+$$O(n!)$$</p>
+<p>Es decir que el orden de complejidad del algoritmo por fuerza bruta es factorial.</p>
 </div>
 </div>
 </div>
@@ -7825,7 +7834,7 @@ si que tendrá un coste temporal constante $O(1)$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [65]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
@@ -7898,8 +7907,8 @@ si que tendrá un coste temporal constante $O(1)$</p>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Total expresiones generadas 5249
-Solución encontrada: 7-2+4*5/1 = 25.0
+<pre>Total expresiones generadas 7825
+Solución encontrada: 2-5+7*4/1 = 25.0
 </pre>
 </div>
 </div>
@@ -7922,7 +7931,7 @@ Solución encontrada: 7-2+4*5/1 = 25.0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [66]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">MIN_INTERVAL</span> <span class="o">=</span> <span class="o">-</span><span class="mi">72</span>
@@ -7954,153 +7963,153 @@ Solución encontrada: 7-2+4*5/1 = 25.0
 <pre>No se ha encontrado solución para el valor -72
 No se ha encontrado solución para el valor -71
 No se ha encontrado solución para el valor -70
-Para el valor -69 se ha encontrado la expresión 1-8*9+4/2
+Para el valor -69 se ha encontrado la expresión 1-8*9+6/3
 Para el valor -68 se ha encontrado la expresión 2-8*9+6/3
-Para el valor -67 se ha encontrado la expresión 3-8*9+4/2
-Para el valor -66 se ha encontrado la expresión 3-8*9+6/2
-Para el valor -65 se ha encontrado la expresión 3-8*9+4/1
-Para el valor -64 se ha encontrado la expresión 3-8*9+5/1
-Para el valor -63 se ha encontrado la expresión 7-8*9+4/2
-Para el valor -62 se ha encontrado la expresión 7-8*9+3/1
-Para el valor -61 se ha encontrado la expresión 7-8*9+4/1
-Para el valor -60 se ha encontrado la expresión 7-8*9+5/1
-Para el valor -59 se ha encontrado la expresión 7-8*9+6/1
-Para el valor -58 se ha encontrado la expresión 3-7*9+8/4
-Para el valor -57 se ha encontrado la expresión 3-7*9+6/2
-Para el valor -56 se ha encontrado la expresión 3-7*9+8/2
-Para el valor -55 se ha encontrado la expresión 3-7*9+5/1
-Para el valor -54 se ha encontrado la expresión 3-7*9+6/1
-Para el valor -53 se ha encontrado la expresión 8-7*9+4/2
-Para el valor -52 se ha encontrado la expresión 3-7*9+8/1
-Para el valor -51 se ha encontrado la expresión 3-7*8+4/2
-Para el valor -50 se ha encontrado la expresión 3-7*8+6/2
-Para el valor -49 se ha encontrado la expresión 3-7*8+4/1
-Para el valor -48 se ha encontrado la expresión 3-7*8+5/1
-Para el valor -47 se ha encontrado la expresión 3-7*8+6/1
-Para el valor -46 se ha encontrado la expresión 3-9*6+5/1
-Para el valor -45 se ha encontrado la expresión 7-9*6+8/4
-Para el valor -44 se ha encontrado la expresión 7-9*6+3/1
-Para el valor -43 se ha encontrado la expresión 7-9*6+8/2
-Para el valor -42 se ha encontrado la expresión 7-9*6+5/1
-Para el valor -41 se ha encontrado la expresión 3-8*6+4/1
-Para el valor -40 se ha encontrado la expresión 3-8*6+5/1
-Para el valor -39 se ha encontrado la expresión 7-8*6+4/2
-Para el valor -38 se ha encontrado la expresión 7-8*6+3/1
-Para el valor -37 se ha encontrado la expresión 7-8*6+4/1
-Para el valor -36 se ha encontrado la expresión 7-8*6+5/1
-Para el valor -35 se ha encontrado la expresión 7-9*5+3/1
-Para el valor -34 se ha encontrado la expresión 7-9*5+8/2
-Para el valor -33 se ha encontrado la expresión 3-8*5+4/1
-Para el valor -32 se ha encontrado la expresión 7-8*6+9/1
-Para el valor -31 se ha encontrado la expresión 7-8*5+4/2
-Para el valor -30 se ha encontrado la expresión 7-8*5+3/1
-Para el valor -29 se ha encontrado la expresión 7-8*5+4/1
-Para el valor -28 se ha encontrado la expresión 7-8*9/2+1
-Para el valor -27 se ha encontrado la expresión 7-8*5+6/1
-Para el valor -26 se ha encontrado la expresión 7-8*9/2+3
-Para el valor -25 se ha encontrado la expresión 7-8*9/2+4
-Para el valor -24 se ha encontrado la expresión 7-8*9/2+5
-Para el valor -23 se ha encontrado la expresión 7-8*9/2+6
-Para el valor -22 se ha encontrado la expresión 7-8*4+3/1
-Para el valor -21 se ha encontrado la expresión 7-9*4+8/1
-Para el valor -20 se ha encontrado la expresión 7-8*4+5/1
-Para el valor -19 se ha encontrado la expresión 7-8*4+6/1
-Para el valor -18 se ha encontrado la expresión 7-3*9+8/4
-Para el valor -17 se ha encontrado la expresión 7-3*9+6/2
-Para el valor -16 se ha encontrado la expresión 7-3*9+8/2
-Para el valor -15 se ha encontrado la expresión 7-3*8+4/2
-Para el valor -14 se ha encontrado la expresión 7-3*8+6/2
-Para el valor -13 se ha encontrado la expresión 7-3*8+4/1
-Para el valor -12 se ha encontrado la expresión 7-3*8+5/1
-Para el valor -11 se ha encontrado la expresión 7-3*8+6/1
-Para el valor -10 se ha encontrado la expresión 7-8*9/4+1
-Para el valor -9 se ha encontrado la expresión 7-3*6+8/4
-Para el valor -8 se ha encontrado la expresión 7-3*8+9/1
-Para el valor -7 se ha encontrado la expresión 7-3*6+8/2
-Para el valor -6 se ha encontrado la expresión 7-3*6+5/1
-Para el valor -5 se ha encontrado la expresión 7-3*5+6/2
-Para el valor -4 se ha encontrado la expresión 7-3*8/2+1
-Para el valor -3 se ha encontrado la expresión 7-3*4+2/1
-Para el valor -2 se ha encontrado la expresión 7-3*4+6/2
-Para el valor -1 se ha encontrado la expresión 7-3*8/2+4
-Para el valor 0 se ha encontrado la expresión 7-3*8/2+5
-Para el valor 1 se ha encontrado la expresión 7-3*8/2+6
-Para el valor 2 se ha encontrado la expresión 7-3*8/4+1
-Para el valor 3 se ha encontrado la expresión 7-3*8/4+2
-Para el valor 4 se ha encontrado la expresión 7-3*8/2+9
-Para el valor 5 se ha encontrado la expresión 7-3+4*2/8
-Para el valor 6 se ha encontrado la expresión 7-3+8*1/4
-Para el valor 7 se ha encontrado la expresión 7-3+9*2/6
-Para el valor 8 se ha encontrado la expresión 7-3+8*2/4
-Para el valor 9 se ha encontrado la expresión 7-3*4/2+8
-Para el valor 10 se ha encontrado la expresión 7-3+9*4/6
-Para el valor 11 se ha encontrado la expresión 7-3*2/6+5
-Para el valor 12 se ha encontrado la expresión 7-3+4*2/1
-Para el valor 13 se ha encontrado la expresión 7-3*4/6+8
-Para el valor 14 se ha encontrado la expresión 7-3+8*5/4
-Para el valor 15 se ha encontrado la expresión 7-3*2/6+9
-Para el valor 16 se ha encontrado la expresión 7-3+8*9/6
-Para el valor 17 se ha encontrado la expresión 7-8+3*6/1
-Para el valor 18 se ha encontrado la expresión 7-8/2+3*5
-Para el valor 19 se ha encontrado la expresión 7-3+6*5/2
-Para el valor 20 se ha encontrado la expresión 7-3+8*4/2
-Para el valor 21 se ha encontrado la expresión 7-8/2+3*6
-Para el valor 22 se ha encontrado la expresión 7-3+8*9/4
-Para el valor 23 se ha encontrado la expresión 7-8+4*6/1
-Para el valor 24 se ha encontrado la expresión 7-3+8*5/2
-Para el valor 25 se ha encontrado la expresión 7-2+4*5/1
-Para el valor 26 se ha encontrado la expresión 7-8+3*9/1
-Para el valor 27 se ha encontrado la expresión 7-8/2+4*6
-Para el valor 28 se ha encontrado la expresión 7-3+8*6/2
-Para el valor 29 se ha encontrado la expresión 7-8+6*5/1
-Para el valor 30 se ha encontrado la expresión 7-8/2+3*9
-Para el valor 31 se ha encontrado la expresión 7-3+9*6/2
-Para el valor 32 se ha encontrado la expresión 7-8/4+3*9
-Para el valor 33 se ha encontrado la expresión 7-8/2+6*5
-Para el valor 34 se ha encontrado la expresión 7-3+6*5/1
-Para el valor 35 se ha encontrado la expresión 7-8+9*4/1
-Para el valor 36 se ha encontrado la expresión 7-3+8*4/1
-Para el valor 37 se ha encontrado la expresión 7-2+8*4/1
-Para el valor 38 se ha encontrado la expresión 7-9+8*5/1
-Para el valor 39 se ha encontrado la expresión 7-8/2+9*4
-Para el valor 40 se ha encontrado la expresión 7-3+8*9/2
-Para el valor 41 se ha encontrado la expresión 7-2+9*4/1
-Para el valor 42 se ha encontrado la expresión 7-1+8*9/2
-Para el valor 43 se ha encontrado la expresión 7-4+8*5/1
-Para el valor 44 se ha encontrado la expresión 7-3+8*5/1
-Para el valor 45 se ha encontrado la expresión 7-4/2+8*5
-Para el valor 46 se ha encontrado la expresión 7-9+8*6/1
-Para el valor 47 se ha encontrado la expresión 7*6-3+8/1
-Para el valor 48 se ha encontrado la expresión 7-8/2+9*5
-Para el valor 49 se ha encontrado la expresión 7-3+9*5/1
-Para el valor 50 se ha encontrado la expresión 7-8/4+9*5
-Para el valor 51 se ha encontrado la expresión 7-4+8*6/1
-Para el valor 52 se ha encontrado la expresión 7-3+8*6/1
-Para el valor 53 se ha encontrado la expresión 7-8+9*6/1
-Para el valor 54 se ha encontrado la expresión 7*8-9/3+1
-Para el valor 55 se ha encontrado la expresión 7*8-3+4/2
-Para el valor 56 se ha encontrado la expresión 7-5+9*6/1
-Para el valor 57 se ha encontrado la expresión 7-8/2+9*6
-Para el valor 58 se ha encontrado la expresión 7-3+9*6/1
-Para el valor 59 se ha encontrado la expresión 7-8/4+9*6
-Para el valor 60 se ha encontrado la expresión 7*8-4/2+6
-Para el valor 61 se ha encontrado la expresión 7*8-4+9/1
-Para el valor 62 se ha encontrado la expresión 7*8-3+9/1
-Para el valor 63 se ha encontrado la expresión 7*8-4/2+9
-Para el valor 64 se ha encontrado la expresión 7*9-3+8/2
-Para el valor 65 se ha encontrado la expresión 7*9-3+5/1
-Para el valor 66 se ha encontrado la expresión 7*9-3+6/1
-Para el valor 67 se ha encontrado la expresión 7*9-8/4+6
-Para el valor 68 se ha encontrado la expresión 7*9-3+8/1
-Para el valor 69 se ha encontrado la expresión 7*9-4/2+8
-Para el valor 70 se ha encontrado la expresión 3-5+8*9/1
-Para el valor 71 se ha encontrado la expresión 3-4+8*9/1
-Para el valor 72 se ha encontrado la expresión 3-6/2+8*9
-Para el valor 73 se ha encontrado la expresión 7-6+8*9/1
-Para el valor 74 se ha encontrado la expresión 7-5+8*9/1
-Para el valor 75 se ha encontrado la expresión 7-4+8*9/1
-Para el valor 76 se ha encontrado la expresión 7-3+8*9/1
-Para el valor 77 se ha encontrado la expresión 7-4/2+8*9
+Para el valor -67 se ha encontrado la expresión 2-8*9+3/1
+Para el valor -66 se ha encontrado la expresión 2-8*9+4/1
+Para el valor -65 se ha encontrado la expresión 2-8*9+5/1
+Para el valor -64 se ha encontrado la expresión 2-8*9+6/1
+Para el valor -63 se ha encontrado la expresión 2-8*9+7/1
+Para el valor -62 se ha encontrado la expresión 6-8*9+4/1
+Para el valor -61 se ha encontrado la expresión 6-8*9+5/1
+Para el valor -60 se ha encontrado la expresión 5-8*9+7/1
+Para el valor -59 se ha encontrado la expresión 2-9*7+6/3
+Para el valor -58 se ha encontrado la expresión 2-9*7+3/1
+Para el valor -57 se ha encontrado la expresión 2-9*7+4/1
+Para el valor -56 se ha encontrado la expresión 2-9*7+5/1
+Para el valor -55 se ha encontrado la expresión 2-9*7+6/1
+Para el valor -54 se ha encontrado la expresión 6-9*7+3/1
+Para el valor -53 se ha encontrado la expresión 2-9*7+8/1
+Para el valor -52 se ha encontrado la expresión 2-8*7+6/3
+Para el valor -51 se ha encontrado la expresión 2-8*7+9/3
+Para el valor -50 se ha encontrado la expresión 2-8*7+4/1
+Para el valor -49 se ha encontrado la expresión 2-8*7+5/1
+Para el valor -48 se ha encontrado la expresión 2-8*7+6/1
+Para el valor -47 se ha encontrado la expresión 2-6*9+5/1
+Para el valor -46 se ha encontrado la expresión 6-8*7+4/1
+Para el valor -45 se ha encontrado la expresión 2-8*7+9/1
+Para el valor -44 se ha encontrado la expresión 2-6*9+8/1
+Para el valor -43 se ha encontrado la expresión 2-8*6+9/3
+Para el valor -42 se ha encontrado la expresión 2-8*6+4/1
+Para el valor -41 se ha encontrado la expresión 2-8*6+5/1
+Para el valor -40 se ha encontrado la expresión 2-5*9+3/1
+Para el valor -39 se ha encontrado la expresión 2-8*6+7/1
+Para el valor -38 se ha encontrado la expresión 2-6*7+8/4
+Para el valor -37 se ha encontrado la expresión 2-8*6+9/1
+Para el valor -36 se ha encontrado la expresión 2-8*5+6/3
+Para el valor -35 se ha encontrado la expresión 2-8*5+9/3
+Para el valor -34 se ha encontrado la expresión 2-8*5+4/1
+Para el valor -33 se ha encontrado la expresión 8-5*9+4/1
+Para el valor -32 se ha encontrado la expresión 2-8*5+6/1
+Para el valor -31 se ha encontrado la expresión 2-8*5+7/1
+Para el valor -30 se ha encontrado la expresión 2-5*7+9/3
+Para el valor -29 se ha encontrado la expresión 2-8*5+9/1
+Para el valor -28 se ha encontrado la expresión 2-8*4+6/3
+Para el valor -27 se ha encontrado la expresión 2-8*4+9/3
+Para el valor -26 se ha encontrado la expresión 2-6*5+8/4
+Para el valor -25 se ha encontrado la expresión 2-8*4+5/1
+Para el valor -24 se ha encontrado la expresión 2-8*4+6/1
+Para el valor -23 se ha encontrado la expresión 2-8*4+7/1
+Para el valor -22 se ha encontrado la expresión 8-9*4+6/1
+Para el valor -21 se ha encontrado la expresión 2-8*9/3+1
+Para el valor -20 se ha encontrado la expresión 2-6*5+8/1
+Para el valor -19 se ha encontrado la expresión 2-6*5+9/1
+Para el valor -18 se ha encontrado la expresión 2-8*9/3+4
+Para el valor -17 se ha encontrado la expresión 2-8*9/3+5
+Para el valor -16 se ha encontrado la expresión 2-8*9/3+6
+Para el valor -15 se ha encontrado la expresión 2-8*9/3+7
+Para el valor -14 se ha encontrado la expresión 2-6*3+8/4
+Para el valor -13 se ha encontrado la expresión 2-8*6/3+1
+Para el valor -12 se ha encontrado la expresión 2-6*9/3+4
+Para el valor -11 se ha encontrado la expresión 2-8*9/4+5
+Para el valor -10 se ha encontrado la expresión 2-8*6/3+4
+Para el valor -9 se ha encontrado la expresión 2-8*6/3+5
+Para el valor -8 se ha encontrado la expresión 2-6*9/3+8
+Para el valor -7 se ha encontrado la expresión 2*3/6+1-9
+Para el valor -6 se ha encontrado la expresión 2*3/6+1-8
+Para el valor -5 se ha encontrado la expresión 2*6/4+1-9
+Para el valor -4 se ha encontrado la expresión 2*8/4+1-9
+Para el valor -3 se ha encontrado la expresión 2*6/3+1-8
+Para el valor -2 se ha encontrado la expresión 2*8/4+3-9
+Para el valor -1 se ha encontrado la expresión 2*8/4+1-6
+Para el valor 0 se ha encontrado la expresión 2*8/4+5-9
+Para el valor 1 se ha encontrado la expresión 2*8/4+6-9
+Para el valor 2 se ha encontrado la expresión 2*8/4+5-7
+Para el valor 3 se ha encontrado la expresión 2*8/4+6-7
+Para el valor 4 se ha encontrado la expresión 2*6/4-8+9
+Para el valor 5 se ha encontrado la expresión 2*8/4-6+7
+Para el valor 6 se ha encontrado la expresión 2*8/4-5+7
+Para el valor 7 se ha encontrado la expresión 2*8/4-6+9
+Para el valor 8 se ha encontrado la expresión 2*8/4-5+9
+Para el valor 9 se ha encontrado la expresión 2*8-9+6/3
+Para el valor 10 se ha encontrado la expresión 2*8-9+3/1
+Para el valor 11 se ha encontrado la expresión 2*8-9+4/1
+Para el valor 12 se ha encontrado la expresión 2*8-9+5/1
+Para el valor 13 se ha encontrado la expresión 2*8-6+9/3
+Para el valor 14 se ha encontrado la expresión 2*8-6+4/1
+Para el valor 15 se ha encontrado la expresión 2*8-6+5/1
+Para el valor 16 se ha encontrado la expresión 2*6-5+9/1
+Para el valor 17 se ha encontrado la expresión 2*8-6+7/1
+Para el valor 18 se ha encontrado la expresión 2*8-6/3+4
+Para el valor 19 se ha encontrado la expresión 2*8-6+9/1
+Para el valor 20 se ha encontrado la expresión 2*8-5+9/1
+Para el valor 21 se ha encontrado la expresión 2*8-6/3+7
+Para el valor 22 se ha encontrado la expresión 2*8-3+9/1
+Para el valor 23 se ha encontrado la expresión 2*8-6/3+9
+Para el valor 24 se ha encontrado la expresión 2*9-6/3+8
+Para el valor 25 se ha encontrado la expresión 2-5+7*4/1
+Para el valor 26 se ha encontrado la expresión 8*6/2-5+7
+Para el valor 27 se ha encontrado la expresión 2-8/4+9*3
+Para el valor 28 se ha encontrado la expresión 2-6+8*4/1
+Para el valor 29 se ha encontrado la expresión 2-8+5*7/1
+Para el valor 30 se ha encontrado la expresión 2-8+9*4/1
+Para el valor 31 se ha encontrado la expresión 2-6+5*7/1
+Para el valor 32 se ha encontrado la expresión 2-6+9*4/1
+Para el valor 33 se ha encontrado la expresión 2-5+9*4/1
+Para el valor 34 se ha encontrado la expresión 2-9/3+5*7
+Para el valor 35 se ha encontrado la expresión 2-8/4+5*7
+Para el valor 36 se ha encontrado la expresión 2-8+6*7/1
+Para el valor 37 se ha encontrado la expresión 8*5-6+9/3
+Para el valor 38 se ha encontrado la expresión 2-4+8*5/1
+Para el valor 39 se ha encontrado la expresión 2-8+5*9/1
+Para el valor 40 se ha encontrado la expresión 2-6/3+8*5
+Para el valor 41 se ha encontrado la expresión 2-6+5*9/1
+Para el valor 42 se ha encontrado la expresión 2-8/4+6*7
+Para el valor 43 se ha encontrado la expresión 2-7+6*8/1
+Para el valor 44 se ha encontrado la expresión 2-3+5*9/1
+Para el valor 45 se ha encontrado la expresión 2-8/4+5*9
+Para el valor 46 se ha encontrado la expresión 2-4+6*8/1
+Para el valor 47 se ha encontrado la expresión 2-9/3+6*8
+Para el valor 48 se ha encontrado la expresión 2-8+6*9/1
+Para el valor 49 se ha encontrado la expresión 2-9+8*7/1
+Para el valor 50 se ha encontrado la expresión 8*6-2+4/1
+Para el valor 51 se ha encontrado la expresión 2-5+6*9/1
+Para el valor 52 se ha encontrado la expresión 2-6+8*7/1
+Para el valor 53 se ha encontrado la expresión 2-5+8*7/1
+Para el valor 54 se ha encontrado la expresión 2-8/4+6*9
+Para el valor 55 se ha encontrado la expresión 2-9/3+8*7
+Para el valor 56 se ha encontrado la expresión 2-6/3+8*7
+Para el valor 57 se ha encontrado la expresión 2-8+9*7/1
+Para el valor 58 se ha encontrado la expresión 8*7-2+4/1
+Para el valor 59 se ha encontrado la expresión 2-6+9*7/1
+Para el valor 60 se ha encontrado la expresión 2-5+9*7/1
+Para el valor 61 se ha encontrado la expresión 2-4+9*7/1
+Para el valor 62 se ha encontrado la expresión 2-3+9*7/1
+Para el valor 63 se ha encontrado la expresión 2-8/4+9*7
+Para el valor 64 se ha encontrado la expresión 8/2-3+9*7
+Para el valor 65 se ha encontrado la expresión 8-6+9*7/1
+Para el valor 66 se ha encontrado la expresión 8-5+9*7/1
+Para el valor 67 se ha encontrado la expresión 2-7+8*9/1
+Para el valor 68 se ha encontrado la expresión 2-6+8*9/1
+Para el valor 69 se ha encontrado la expresión 2-5+8*9/1
+Para el valor 70 se ha encontrado la expresión 2-4+8*9/1
+Para el valor 71 se ha encontrado la expresión 2-3+8*9/1
+Para el valor 72 se ha encontrado la expresión 2-6/3+8*9
+Para el valor 73 se ha encontrado la expresión 8*9-2+3/1
+Para el valor 74 se ha encontrado la expresión 8*9-2+4/1
+Para el valor 75 se ha encontrado la expresión 8*9-2+5/1
+Para el valor 76 se ha encontrado la expresión 8*9-2+6/1
+Para el valor 77 se ha encontrado la expresión 8*9-2+7/1
 No se ha encontrado solución para el valor 78
 No se ha encontrado solución para el valor 79
 No se ha encontrado solución para el valor 80
@@ -8139,7 +8148,7 @@ No se ha encontrado solución para el valor 80
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>Lo primero que hay que subrayar es que en el caso de que no se realice ninguna poda la complejidad teoríca del algoritmo sigue siendo la misma, es decir:</p>
-<p>$$ T_{fuerzaBruta} = O(n!·\frac{9!}{(9-(n+1))!})=O(n!·\frac{9!}{(8-n)!})$$</p>
+<p>$$ T_{fuerzaBruta} = O(\frac{n!}{(9-(n+1))!})=O(\frac{n!}{(8-n)!})= O(n!)$$</p>
 <p>Esto se debe a que en realidad la función <code>expresion_generator</code> se encarga de generar todas las expresiones posibles, tal y como se realizaba en fuerza bruta, lo que ha cambiando es el diseño de código a nivel estructural para adaptarlo a la estrategía de ramificación y poda. Esto se traduce en que aunque se usa poda, el árbol de llamadas sigue cubriendo el mismo espacio de soluciones potencial, lo que mantiene la misma cota asintótica superior en caso de que no haya poda.</p>
 <p>Para poder analizar el nuevo coste computacional en primer lugar vayamos al peor caso, el cual es, que no encuentre ninguna solución posible, es decir:</p>
 <ul>
@@ -8153,8 +8162,9 @@ No se ha encontrado solución para el valor 80
 <li>En el peor caso (no se encuentra solución) concluímos que hay una mejora significativa.</li>
 <li>El espacio de búsqueda de nuestro algoritmo quedará reducido en un factor de $\alpha(n, b)$ donde $𝑛$ es el número de operadores y $𝑏$ el valor objetivo (target), este factor representa el factor de poda efectivo, es decir, la proporción del espacio total explorado tras aplicar podas semánticas basadas en $𝑏$:</li>
 </ul>
-<p>$$T_{\text{poda}}(n, b) = \alpha(n, b) \cdot T_{\text{fuerza\_bruta}}(n) = \alpha(n, b) \cdot \left( n! \cdot \frac{9!}{(8 - n)!} \right)$$</p>
+<p>$$T_{\text{poda}}(n, b) = \alpha(n, b) \cdot T_{\text{fuerza\_bruta}}(n) = O(\alpha(n, b) \cdot ( n! ))$$</p>
 <ul>
+<li>Enfatizando que $\alpha(n,b)$ <strong>no es una constante multiplicativa</strong>, sino un valor que va de 0-1 dependiendo de la poda realizada, es decir, $\alpha(n,b)$ representa el porcentaje del espacio de búsqueda que se ha explorado tras aplicar las podas semánticas basadas en $b$.</li>
 <li>Como hemos apreciado en el peor caso, hemos visto que con solo cambiar el valor del target, se modifica significativamente el factor de cobertura del espacio de búsqueda, por lo que de ahí podemos deducir que no solo depende de "n" sino que también del valor del objetivo "b".</li>
 <li>Podemos considerar que en fuerza bruta $\alpha(n, b)$ será igual a 1, que es lo mismo que decir que el algoritmo no corte ramas y disminuya el espacio de búsqueda</li>
 <li>otros factores que influyen en $\alpha(n, b)$ son lo sotisficadas y bien afinadas que esten especificadas las restricciones de ramificación y poda, los operadores disponibles, los dígitos restantes, etc.</li>
@@ -8181,7 +8191,7 @@ No se ha encontrado solución para el valor 80
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [68]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
